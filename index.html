@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AITaskDone — AI Tools That Actually Work</title>
+<meta name="description" content="Summarize PDFs, generate Excel formulas, convert YouTube videos to blog posts, transcribe handwriting to text. Free preview, instant results.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://aitaskdone.vercel.app/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aitaskdone.vercel.app/">
+<meta property="og:title" content="AITaskDone — AI Tools That Actually Work">
+<meta property="og:description" content="Summarize PDFs, generate Excel formulas, convert YouTube videos to blog posts, transcribe handwriting. Free preview, instant results.">
+<meta property="og:image" content="https://aitaskdone.vercel.app/og.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AITaskDone — AI Tools That Actually Work">
+<meta name="twitter:description" content="Summarize PDFs, generate Excel formulas, convert YouTube videos to blog posts, transcribe handwriting. Free preview, instant results.">
+<meta name="twitter:image" content="https://aitaskdone.vercel.app/og.png">
+
+<!-- Schema.org structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AITaskDone",
+  "url": "https://aitaskdone.vercel.app",
+  "description": "AI-powered tools to summarize PDFs, generate Excel formulas, convert YouTube videos to blog posts, and transcribe handwriting to text.",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Web",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "One-time unlock",
+      "price": "4.99",
+      "priceCurrency": "USD"
+    },
+    {
+      "@type": "Offer",
+      "name": "Unlimited monthly",
+      "price": "9.00",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "billingDuration": "P1M"
+      }
+    }
+  ],
+  "featureList": [
+    "PDF Summarizer",
+    "Excel Formula Generator",
+    "YouTube to Blog Post Converter",
+    "Handwriting to Text Transcription"
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cal+Sans&display=swap" rel="stylesheet">
+<!-- Fallback for Cal Sans -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+</style>
+
+<style>
+/* ════════════════════════════════════════════
+   DESIGN SYSTEM — Premium SaaS / Linear-tier
+   ════════════════════════════════════════════ */
+:root {
+  /* Surfaces */
+  --bg:          #080809;
+  --bg-elevated: #0f0f10;
+  --card:        #111113;
+  --card-hover:  #161618;
+  --overlay:     #1a1a1d;
+  --input-bg:    #0d0d0f;
+
+  /* Borders */
+  --border-subtle:  rgba(255,255,255,0.055);
+  --border-default: rgba(255,255,255,0.09);
+  --border-strong:  rgba(255,255,255,0.14);
+
+  /* Text */
+  --text-primary:   #f2f2f3;
+  --text-secondary: #8b8b99;
+  --text-tertiary:  #555560;
+  --text-disabled:  #3a3a44;
+
+  /* Accent — one color, used deliberately */
+  --accent:       #5b6ad0;
+  --accent-light: #7b8ee8;
+  --accent-glow:  rgba(91,106,208,0.18);
+  --accent-ring:  rgba(91,106,208,0.35);
+
+  /* Semantic */
+  --green:  #22c55e;
+  --green-bg: rgba(34,197,94,0.08);
+  --green-border: rgba(34,197,94,0.2);
+  --red:    #ef4444;
+  --red-bg: rgba(239,68,68,0.08);
+  --red-border: rgba(239,68,68,0.2);
+
+  /* Type */
+  --font: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Subtle background texture ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(91,106,208,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 90% 80%, rgba(91,106,208,0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ════════════════════════════════════════════
+   NAV
+   ════════════════════════════════════════════ */
+.nav {
+  position: sticky; top: 0; z-index: 500;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(8,8,9,0.92);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Logo */
+.nav-logo {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; flex-shrink: 0;
+}
+.nav-logo-mark {
+  width: 26px; height: 26px;
+  background: var(--accent);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(91,106,208,0.5), 0 4px 12px rgba(91,106,208,0.25);
+}
+.nav-logo-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+/* Nav tabs — pill switcher */
+.nav-switcher {
+  display: flex; align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9px;
+  padding: 3px;
+  gap: 1px;
+}
+.nav-switch-btn {
+  padding: 5px 13px;
+  border-radius: 6px;
+  background: transparent; border: none;
+  font-family: var(--font);
+  font-size: 0.78rem; font-weight: 500;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.15s var(--ease-std);
+  white-space: nowrap;
+}
+.nav-switch-btn:hover { color: var(--text-secondary); }
+.nav-switch-btn.active {
+  background: var(--overlay);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 0 0 1px var(--border-default);
+}
+
+/* Nav right */
+.nav-right { display: flex; align-items: center; gap: 8px; }
+
+.sub-indicator {
+  display: none; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  border-radius: 100px;
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--green);
+  letter-spacing: 0.1px;
+}
+.sub-indicator.visible { display: flex; }
+.sub-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.btn-sub-nav {
+  padding: 5px 13px;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: 7px;
+  font-family: var(--font);
+  font-size: 0.78rem; font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-sub-nav:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  background: var(--card);
+}
+
+/* ════════════════════════════════════════════
+   HERO
+   ════════════════════════════════════════════ */
+.hero-section {
+  position: relative; z-index: 1;
+  max-width: 1080px; margin: 0 auto;
+  padding: 80px 24px 64px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 64px;
+  align-items: start;
+}
+
+/* Left copy */
+.hero-copy {}
+
+.hero-label {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 4px 12px;
+  background: var(--card);
+  border: 1px solid var(--border-default);
+  border-radius: 100px;
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+  margin-bottom: 22px;
+  opacity: 0; animation: up 0.6s var(--ease) 0.05s forwards;
+}
+.hero-label-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-light); }
+
+.hero-h1 {
+  font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -1.8px;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+  opacity: 0; animation: up 0.6s var(--ease) 0.1s forwards;
+}
+.hero-h1 .accent { color: var(--accent-light); }
+
+.hero-p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 460px;
+  margin-bottom: 36px;
+  opacity: 0; animation: up 0.6s var(--ease) 0.15s forwards;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap;
+  opacity: 0; animation: up 0.6s var(--ease) 0.2s forwards;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: white; border: none;
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 0.88rem; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+  box-shadow: 0 0 0 1px rgba(91,106,208,0.6), 0 4px 16px rgba(91,106,208,0.3);
+  letter-spacing: -0.1px;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--accent-light);
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(91,106,208,0.7), 0 8px 24px rgba(91,106,208,0.4);
+}
+
+.hero-secondary-text {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+.hero-secondary-text strong { color: var(--text-secondary); font-weight: 500; }
+
+/* Right — compact stats */
+.hero-stats {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--border-subtle);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 210px;
+  opacity: 0; animation: up 0.6s var(--ease) 0.18s forwards;
+}
+.hero-stat {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 16px;
+  background: var(--card);
+  gap: 16px;
+  transition: background 0.15s;
+}
+.hero-stat:hover { background: var(--card-hover); }
+.hero-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+.hero-stat-val {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+.hero-stat-val.green { color: var(--green); }
+
+@keyframes up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════════════════════════════════════════════
+   TOOL SECTION
+   ════════════════════════════════════════════ */
+.tools-wrapper {
+  position: relative; z-index: 1;
+  max-width: 1080px; margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+/* Tool selector row */
+.tool-tabs {
+  display: flex; gap: 6px;
+  padding: 3px;
+  background: var(--card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 11px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.tool-tab {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 16px;
+  background: transparent; border: none;
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 0.83rem; font-weight: 500;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.15s var(--ease-std);
+}
+.tool-tab:hover { color: var(--text-secondary); background: rgba(255,255,255,0.03); }
+.tool-tab.active {
+  background: var(--overlay);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+.tool-tab-icon { font-size: 0.9rem; }
+
+/* ── Two-column layout ── */
+.tool-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
+  align-items: start;
+}
+
+/* Main tool card */
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* Thin accent line per tool */
+.tool-accent { height: 1px; }
+[data-tool="pdf"]     .tool-accent { background: linear-gradient(90deg, var(--accent), transparent 70%); }
+[data-tool="excel"]   .tool-accent { background: linear-gradient(90deg, #16a34a, transparent 70%); }
+[data-tool="youtube"] .tool-accent { background: linear-gradient(90deg, #dc2626, transparent 70%); }
+[data-tool="hw"]      .tool-accent { background: linear-gradient(90deg, #d97706, transparent 70%); }
+
+.tool-card-head {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.tool-card-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+  background: var(--overlay);
+  border: 1px solid var(--border-subtle);
+}
+.tool-card-meta { flex: 1; }
+.tool-card-title {
+  font-size: 1.05rem; font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+.tool-card-desc {
+  font-size: 0.82rem; font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.tool-card-tag {
+  flex-shrink: 0;
+  font-size: 0.68rem; font-weight: 600;
+  color: var(--green);
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  padding: 3px 9px; border-radius: 100px;
+  letter-spacing: 0.3px;
+  margin-top: 2px;
+}
+
+/* Steps bar */
+.steps {
+  display: flex; align-items: center;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 6px;
+}
+.step {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; color: var(--text-tertiary); font-weight: 400;
+}
+.step-n {
+  width: 18px; height: 18px; border-radius: 4px;
+  background: rgba(91,106,208,0.12);
+  color: var(--accent-light);
+  font-size: 0.65rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.step-arrow { color: var(--text-disabled); font-size: 0.8rem; }
+
+/* Card body */
+.tool-card-body { padding: 22px 24px; }
+
+/* ── Form elements ── */
+.field { margin-bottom: 16px; }
+.field-label {
+  display: block;
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+textarea, input[type="text"], input[type="url"], input[type="email"] {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-primary);
+  padding: 11px 13px;
+  font-family: var(--font);
+  font-size: 0.88rem; font-weight: 400;
+  line-height: 1.5;
+  resize: vertical; outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+textarea:focus, input:focus {
+  border-color: rgba(91,106,208,0.45);
+  box-shadow: 0 0 0 3px rgba(91,106,208,0.1);
+}
+textarea::placeholder, input::placeholder { color: var(--text-disabled); }
+textarea { min-height: 110px; }
+
+/* File drop */
+.file-drop {
+  border: 1px dashed var(--border-default);
+  border-radius: 8px;
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--input-bg);
+  position: relative;
+  transition: all 0.15s;
+}
+.file-drop:hover, .file-drop.drag {
+  border-color: rgba(91,106,208,0.4);
+  background: rgba(91,106,208,0.03);
+}
+.file-drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.fd-icon {
+  width: 36px; height: 36px; margin: 0 auto 9px;
+  background: var(--overlay);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: transform 0.18s var(--ease);
+}
+.file-drop:hover .fd-icon { transform: scale(1.08) translateY(-2px); }
+.fd-text { font-size: 0.82rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 2px; }
+.fd-text span { color: var(--accent-light); }
+.fd-sub { font-size: 0.72rem; color: var(--text-tertiary); }
+
+.file-chip {
+  display: none; align-items: center; gap: 7px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: rgba(91,106,208,0.07);
+  border: 1px solid rgba(91,106,208,0.16);
+  border-radius: 6px;
+  font-size: 0.78rem; font-weight: 500; color: var(--accent-light);
+}
+
+/* Segment control */
+.seg-ctrl { display: flex; gap: 5px; flex-wrap: wrap; }
+.seg-input { display: none; }
+.seg-label {
+  padding: 6px 14px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 7px;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.13s;
+  user-select: none;
+}
+.seg-label:hover { border-color: var(--border-default); color: var(--text-secondary); }
+.seg-input:checked + .seg-label {
+  background: rgba(91,106,208,0.1);
+  border-color: rgba(91,106,208,0.3);
+  color: var(--accent-light); font-weight: 600;
+}
+
+/* Run button */
+.btn-run {
+  width: 100%; padding: 11px 16px;
+  border-radius: 8px; border: none;
+  font-family: var(--font);
+  font-size: 0.88rem; font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: all 0.18s var(--ease);
+  letter-spacing: -0.1px;
+}
+.btn-run:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+.btn-pdf     { background: var(--accent); color: white; box-shadow: 0 2px 12px rgba(91,106,208,0.3); }
+.btn-pdf:not(:disabled):hover     { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(91,106,208,0.4); }
+.btn-excel   { background: #16a34a; color: white; box-shadow: 0 2px 12px rgba(22,163,74,0.3); }
+.btn-excel:not(:disabled):hover   { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(22,163,74,0.4); }
+.btn-youtube { background: #dc2626; color: white; box-shadow: 0 2px 12px rgba(220,38,38,0.3); }
+.btn-youtube:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(220,38,38,0.4); }
+.btn-hw      { background: #d97706; color: white; box-shadow: 0 2px 12px rgba(217,119,6,0.3); }
+.btn-hw:not(:disabled):hover      { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(217,119,6,0.4); }
+
+/* Loading */
+.loading {
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px 16px; gap: 14px;
+}
+.progress-bar {
+  width: 100%; height: 2px; max-width: 200px;
+  background: var(--border-subtle);
+  border-radius: 2px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 2px;
+  animation: sweep 1.6s ease-in-out infinite;
+}
+.prog-pdf     { background: var(--accent); }
+.prog-excel   { background: #16a34a; }
+.prog-youtube { background: #dc2626; }
+.prog-hw      { background: #d97706; }
+@keyframes sweep {
+  0%   { width: 5%;  margin-left: 0%; }
+  50%  { width: 65%; margin-left: 18%; }
+  100% { width: 5%;  margin-left: 100%; }
+}
+.loading-label { font-size: 0.8rem; color: var(--text-tertiary); font-weight: 400; }
+
+/* Result */
+.result-panel {
+  display: none;
+  margin-top: 16px;
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: snap 0.28s var(--ease);
+}
+@keyframes snap {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--overlay);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.result-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
+}
+.result-dot { width: 6px; height: 6px; border-radius: 50%; animation: pulse 1.5s ease infinite; }
+.result-hint {
+  font-size: 0.69rem; color: var(--text-tertiary);
+  background: var(--card); border: 1px solid var(--border-subtle);
+  padding: 2px 8px; border-radius: 4px; font-weight: 400;
+}
+
+.result-body { padding: 16px 18px; background: var(--bg-elevated); }
+.result-text {
+  font-size: 0.88rem; line-height: 1.8; color: var(--text-secondary);
+  font-weight: 400; white-space: pre-wrap;
+}
+.mono-result {
+  font-family: var(--font-mono);
+  font-size: 0.88rem; font-weight: 500;
+  color: #4ade80;
+  background: #050f06;
+  border: 1px solid rgba(74,222,128,0.1);
+  border-radius: 8px;
+  padding: 14px 16px;
+  word-break: break-all; line-height: 1.65;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s;
+}
+.mono-result:hover { border-color: rgba(74,222,128,0.2); }
+.mono-hint {
+  position: absolute; top: 7px; right: 10px;
+  font-size: 0.6rem; color: rgba(74,222,128,0.35);
+  font-family: var(--font); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.mono-explain {
+  margin-top: 9px;
+  font-size: 0.8rem; color: var(--text-tertiary); line-height: 1.6;
+}
+
+/* Blur section */
+.blur-wrap { position: relative; }
+.blur-body {
+  padding: 0 18px 18px;
+  background: var(--bg-elevated);
+  filter: blur(5px);
+  user-select: none; pointer-events: none;
+  font-size: 0.85rem; line-height: 1.8; color: var(--text-tertiary);
+}
+.blur-fade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(15,15,16,0) 0%, rgba(15,15,16,0.98) 55%);
+}
+
+/* ── Paywall ── */
+.paywall {
+  background: var(--card);
+  border-top: 1px solid var(--border-subtle);
+  padding: 18px 20px;
+}
+
+.paywall-line {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px;
+}
+.paywall-icon {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  background: var(--overlay);
+  border: 1px solid var(--border-default);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+}
+.paywall-copy {}
+.paywall-title {
+  font-size: 0.9rem; font-weight: 700;
+  color: var(--text-primary); letter-spacing: -0.2px;
+  margin-bottom: 1px;
+}
+.paywall-sub { font-size: 0.75rem; color: var(--text-tertiary); line-height: 1.4; }
+
+.paywall-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+
+.pw-opt {
+  padding: 12px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.pw-opt:hover { border-color: var(--border-default); }
+.pw-opt.hot {
+  background: rgba(91,106,208,0.06);
+  border-color: rgba(91,106,208,0.22);
+  position: relative;
+}
+.pw-best {
+  position: absolute; top: -8px; right: 10px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.6rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 100px;
+  letter-spacing: 0.4px; text-transform: uppercase;
+}
+.pw-price {
+  font-size: 1.3rem; font-weight: 800;
+  color: var(--text-primary); letter-spacing: -0.5px;
+  line-height: 1; margin-bottom: 1px;
+}
+.pw-price span { font-size: 0.75rem; font-weight: 400; color: var(--text-tertiary); }
+.pw-period { font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 10px; }
+.pw-btn {
+  display: block; width: 100%; padding: 7px 8px;
+  border-radius: 6px; border: none;
+  font-family: var(--font); font-size: 0.76rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; letter-spacing: 0.1px;
+}
+.pw-btn-once {
+  background: var(--overlay);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+.pw-btn-once:hover { background: var(--card-hover); color: var(--text-primary); }
+.pw-btn-sub { background: var(--accent); color: white; }
+.pw-btn-sub:hover { background: var(--accent-light); }
+
+.pw-already { text-align: center; }
+.pw-already button {
+  background: none; border: none;
+  font-size: 0.75rem; color: var(--text-tertiary);
+  cursor: pointer; font-family: var(--font);
+  transition: color 0.13s;
+  text-decoration: underline; text-underline-offset: 2px;
+  text-decoration-color: var(--text-disabled);
+}
+.pw-already button:hover { color: var(--text-secondary); }
+
+/* Unlocked */
+.paywall.unlocked {
+  background: var(--green-bg);
+  border-top-color: var(--green-border);
+}
+.unlocked-wrap { display: flex; align-items: center; gap: 12px; }
+.unlocked-check {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; color: var(--green);
+}
+.unlocked-text strong { display: block; font-size: 0.85rem; font-weight: 700; color: var(--green); margin-bottom: 1px; }
+.unlocked-text span { font-size: 0.75rem; color: var(--text-tertiary); }
+.btn-copy-full {
+  display: block; width: 100%; margin-top: 12px;
+  padding: 9px; border-radius: 7px;
+  background: rgba(34,197,94,0.07);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-family: var(--font); font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-copy-full:hover { background: rgba(34,197,94,0.12); transform: translateY(-1px); }
+
+/* ── Right panel ── */
+.side-panel {
+  display: flex; flex-direction: column; gap: 10px;
+  position: sticky; top: 72px;
+}
+
+.side-card {
+  background: var(--card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.side-card-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.4px; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* Tool list in sidebar */
+.side-tool-list { padding: 6px; }
+.side-tool-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 9px;
+  border-radius: 7px;
+  background: transparent; border: none;
+  width: 100%; text-align: left;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.13s;
+  margin-bottom: 1px;
+}
+.side-tool-item:hover { background: var(--overlay); }
+.side-tool-item.active { background: var(--overlay); }
+.side-tool-item.active .sti-name { color: var(--text-primary); font-weight: 600; }
+.sti-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--overlay);
+  border: 1px solid var(--border-subtle);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; flex-shrink: 0;
+}
+.sti-name { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); flex: 1; }
+.sti-badge {
+  font-size: 0.62rem; font-weight: 600;
+  color: var(--green); background: var(--green-bg);
+  padding: 2px 6px; border-radius: 3px;
+  letter-spacing: 0.3px;
+}
+
+/* Pricing card */
+.pricing-card { padding: 14px; }
+.pricing-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer; transition: opacity 0.13s;
+}
+.pricing-row:last-child { border-bottom: none; padding-bottom: 0; }
+.pricing-row:hover { opacity: 0.75; }
+.pr-label { font-size: 0.8rem; color: var(--text-secondary); font-weight: 400; }
+.pr-price { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; }
+.pr-badge {
+  display: block; margin-top: 1px;
+  font-size: 0.62rem; color: var(--accent-light); font-weight: 500; text-align: right;
+}
+.pricing-note {
+  margin-top: 10px;
+  font-size: 0.72rem; color: var(--text-tertiary); line-height: 1.5; text-align: center;
+}
+
+/* Tool panel visibility */
+.tool-panel { display: none; }
+.tool-panel.active { display: block; animation: snap 0.25s var(--ease); }
+
+/* ════════════════════════════════════════════
+   MODAL
+   ════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+  padding: 2rem;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 400px; width: 100%;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+  animation: modal-in 0.25s var(--ease);
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-icon {
+  width: 44px; height: 44px; border-radius: 11px; margin-bottom: 16px;
+  background: var(--overlay); border: 1px solid var(--border-default);
+  display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+.modal-title {
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text-primary); letter-spacing: -0.3px; margin-bottom: 6px;
+}
+.modal-desc {
+  font-size: 0.82rem; color: var(--text-secondary);
+  line-height: 1.6; margin-bottom: 16px;
+}
+.modal-error {
+  display: none; margin-top: 7px;
+  padding: 8px 12px;
+  background: var(--red-bg); border: 1px solid var(--red-border);
+  border-radius: 6px; font-size: 0.78rem; color: #fca5a5; line-height: 1.5;
+}
+.modal-error.show { display: block; }
+.modal-checking {
+  display: none; align-items: center; gap: 8px;
+  margin-top: 8px; font-size: 0.78rem; color: var(--text-tertiary);
+}
+.check-spin {
+  width: 14px; height: 14px; border-radius: 50;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--accent-light);
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+.btn-modal-confirm {
+  flex: 1; padding: 11px;
+  background: var(--accent); color: white; border: none;
+  border-radius: 8px; font-family: var(--font);
+  font-size: 0.88rem; font-weight: 600; cursor: pointer;
+  transition: all 0.15s; box-shadow: 0 2px 10px rgba(91,106,208,0.3);
+}
+.btn-modal-confirm:hover { background: var(--accent-light); }
+.btn-modal-confirm:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+.btn-modal-cancel {
+  padding: 11px 16px;
+  background: transparent; border: 1px solid var(--border-default);
+  border-radius: 8px; color: var(--text-secondary);
+  font-family: var(--font); font-size: 0.85rem; cursor: pointer;
+  transition: all 0.13s;
+}
+.btn-modal-cancel:hover { border-color: var(--border-strong); color: var(--text-primary); }
+
+/* ════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════ */
+.footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border-subtle);
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-brand {
+  font-size: 0.85rem; font-weight: 700;
+  color: var(--text-tertiary); letter-spacing: -0.2px;
+}
+.footer-meta { font-size: 0.74rem; color: var(--text-disabled); }
+.footer-links { display: flex; gap: 18px; }
+.footer-link {
+  font-size: 0.74rem; color: var(--text-disabled);
+  text-decoration: none; transition: color 0.13s;
+}
+.footer-link:hover { color: var(--text-tertiary); }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .hero-section { grid-template-columns: 1fr; gap: 40px; }
+  .hero-stats { flex-direction: row; flex-wrap: wrap; }
+  .tool-layout { grid-template-columns: 1fr; }
+  .side-panel { display: none; }
+  .tool-tabs { width: 100%; overflow-x: auto; }
+  .nav-switcher { display: none; }
+}
+@media (max-width: 560px) {
+  .hero-section { padding: 48px 16px 40px; }
+  .tools-wrapper { padding: 0 16px 64px; }
+  .tool-card-head { padding: 16px; }
+  .tool-card-body { padding: 16px; }
+  .paywall-opts { grid-template-columns: 1fr; }
+  .modal-actions { flex-direction: column; }
+  .footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="sub-modal">
+  <div class="modal">
+    <div class="modal-icon">✉️</div>
+    <div class="modal-title">Verify your subscription</div>
+    <p class="modal-desc">Enter the email you used to subscribe. We'll confirm your plan instantly — no password needed.</p>
+    <input type="email" id="sub-email" placeholder="you@example.com"
+      onkeydown="if(event.key==='Enter') verify()">
+    <div class="modal-error" id="modal-err">No active subscription found for this email. Please check the address you subscribed with.</div>
+    <div class="modal-checking" id="modal-checking">
+      <div class="check-spin"></div> Verifying your subscription…
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-confirm" id="verify-btn" onclick="verify()">Confirm & unlock</button>
+      <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">AI</div>
+    <div class="nav-logo-name">AITaskDone</div>
+  </a>
+
+  <div class="nav-switcher">
+    <button class="nav-switch-btn active" data-nav="pdf"     onclick="switchTool('pdf')">PDF Summary</button>
+    <button class="nav-switch-btn"        data-nav="excel"   onclick="switchTool('excel')">Excel Formula</button>
+    <button class="nav-switch-btn"        data-nav="youtube" onclick="switchTool('youtube')">YouTube → Blog</button>
+    <button class="nav-switch-btn"        data-nav="hw"      onclick="switchTool('hw')">Handwriting</button>
+  </div>
+
+  <div class="nav-right">
+    <div class="sub-indicator" id="sub-indicator">
+      <div class="sub-dot"></div>
+      <span id="sub-indicator-text">Unlimited</span>
+    </div>
+    <button class="btn-sub-nav" id="btn-sub-nav" onclick="openModal()">Already subscribed?</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-copy">
+    <div class="hero-label">
+      <div class="hero-label-dot"></div>
+      4 AI tools — free preview — no account needed
+    </div>
+    <h1 class="hero-h1">
+      The AI tools<br>
+      you've been<br>
+      <span class="accent">searching for.</span>
+    </h1>
+    <p class="hero-p">
+      Summarize any PDF. Generate exact Excel formulas. Convert YouTube videos to blog posts. Transcribe handwriting to text. Results in seconds.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.querySelector('.tools-wrapper').scrollIntoView({behavior:'smooth'})">
+        Try a tool free →
+      </button>
+      <div class="hero-secondary-text">
+        Preview free · <strong>$4.99</strong> one-time or <strong>$9/mo</strong> unlimited
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-label">Avg. result time</span>
+      <span class="hero-stat-val">~10 seconds</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">One-time unlock</span>
+      <span class="hero-stat-val">$4.99</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">Unlimited plan</span>
+      <span class="hero-stat-val">$9 / month</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">Account required</span>
+      <span class="hero-stat-val green">Never</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">Tools available</span>
+      <span class="hero-stat-val">4 tools</span>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<main class="tools-wrapper">
+
+  <!-- Tab bar -->
+  <div class="tool-tabs">
+    <button class="tool-tab active" data-tab="pdf"     onclick="switchTool('pdf')"><span class="tool-tab-icon">📄</span> PDF Summary</button>
+    <button class="tool-tab"        data-tab="excel"   onclick="switchTool('excel')"><span class="tool-tab-icon">📊</span> Excel Formula</button>
+    <button class="tool-tab"        data-tab="youtube" onclick="switchTool('youtube')"><span class="tool-tab-icon">🎥</span> YouTube → Blog</button>
+    <button class="tool-tab"        data-tab="hw"      onclick="switchTool('hw')"><span class="tool-tab-icon">✍️</span> Handwriting</button>
+  </div>
+
+  <div class="tool-layout">
+
+    <!-- ── MAIN PANELS ── -->
+    <div>
+
+      <!-- PDF -->
+      <div class="tool-panel active" id="panel-pdf">
+        <div class="tool-card" data-tool="pdf">
+          <div class="tool-accent"></div>
+          <div class="tool-card-head">
+            <div class="tool-card-icon">📄</div>
+            <div class="tool-card-meta">
+              <h2 class="tool-card-title">PDF Summarizer</h2>
+              <div class="tool-card-desc">Upload any PDF — contracts, research, reports, books. Get a clean, structured summary in under 10 seconds. Stop reading 100 pages to find 3 key points.</div>
+            </div>
+            <div class="tool-card-tag">Free preview</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="step-n">1</div>Upload or paste</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">2</div>AI reads & summarizes</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">3</div>Preview free · unlock full</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="field">
+              <label class="field-label">Upload PDF</label>
+              <div class="file-drop" onclick="document.getElementById('pdf-file').click()">
+                <input type="file" id="pdf-file" accept=".pdf" onchange="showFile('pdf',this)">
+                <div class="fd-icon">📎</div>
+                <div class="fd-text"><span>Click to upload</span> or drag & drop</div>
+                <div class="fd-sub">Reports · Contracts · Research papers · Books</div>
+              </div>
+              <div class="file-chip" id="pdf-fname">📄 <span id="pdf-fname-t"></span></div>
+            </div>
+            <div class="field">
+              <label class="field-label">Or paste document text</label>
+              <textarea id="pdf-text" placeholder="Paste the content you want summarized…&#10;&#10;Works for articles, reports, contracts, meeting notes, research papers."></textarea>
+            </div>
+            <button class="btn-run btn-pdf" id="pdf-btn" onclick="run('pdf')">⚡ Summarize — Free Preview</button>
+            <div class="loading" id="pdf-loading">
+              <div class="progress-bar"><div class="progress-fill prog-pdf"></div></div>
+              <div class="loading-label">Reading and summarizing your document…</div>
+            </div>
+            <div class="result-panel" id="pdf-result">
+              <div class="result-bar">
+                <div class="result-status" style="color:var(--accent-light)">
+                  <div class="result-dot" style="background:var(--accent-light)"></div>Summary ready
+                </div>
+                <div class="result-hint">Free · first section only</div>
+              </div>
+              <div class="result-body"><div class="result-text" id="pdf-output"></div></div>
+              <div class="blur-wrap" id="pdf-blur">
+                <div class="blur-body">The analysis continues with three additional key findings that directly impact the conclusion. Data shows a statistically significant pattern across all variables. The author challenges two widely-held assumptions and proposes a revised framework. Implementation recommendations with timelines and resource requirements are outlined in the final section. The appendix covers methodology and data sources used throughout…</div>
+                <div class="blur-fade"></div>
+              </div>
+              <div class="paywall" id="pdf-paywall">
+                <div class="paywall-line">
+                  <div class="paywall-icon">🔓</div>
+                  <div class="paywall-copy">
+                    <div class="paywall-title">Unlock your full summary</div>
+                    <div class="paywall-sub">Complete summary · all key points · structured sections · downloadable report</div>
+                  </div>
+                </div>
+                <div class="paywall-opts">
+                  <div class="pw-opt">
+                    <div class="pw-price">$4.99</div>
+                    <div class="pw-period">One-time · this document</div>
+                    <button class="pw-btn pw-btn-once" onclick="goOneTime()">Unlock this result</button>
+                  </div>
+                  <div class="pw-opt hot">
+                    <div class="pw-best">Best value</div>
+                    <div class="pw-price">$9<span>/mo</span></div>
+                    <div class="pw-period">Unlimited · all tools · cancel anytime</div>
+                    <button class="pw-btn pw-btn-sub" onclick="goSubscribe()">Get unlimited access</button>
+                  </div>
+                </div>
+                <div class="pw-already"><button onclick="openModal()">Already subscribed? Verify here to unlock →</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXCEL -->
+      <div class="tool-panel" id="panel-excel">
+        <div class="tool-card" data-tool="excel">
+          <div class="tool-accent"></div>
+          <div class="tool-card-head">
+            <div class="tool-card-icon">📊</div>
+            <div class="tool-card-meta">
+              <h2 class="tool-card-title">Excel Formula Generator</h2>
+              <div class="tool-card-desc">Describe what you need in plain English. Get the exact Excel or Google Sheets formula instantly — no formula knowledge required.</div>
+            </div>
+            <div class="tool-card-tag">Free</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="step-n">1</div>Describe in plain English</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">2</div>Get the exact formula</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">3</div>Copy & paste into spreadsheet</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="field">
+              <label class="field-label">What should your formula do?</label>
+              <textarea id="excel-input" placeholder="Describe it naturally. Examples:&#10;&#10;• Add up sales in column B where column A says 'January'&#10;• Find the average of the top 10 values in column C&#10;• Look up a name in column A and return their balance from column D&#10;• Count cells in B2:B100 that are greater than 500"></textarea>
+            </div>
+            <div class="field">
+              <label class="field-label">App</label>
+              <div class="seg-ctrl">
+                <input type="radio" name="sheet" id="r-xl" value="excel" class="seg-input" checked>
+                <label for="r-xl" class="seg-label">Microsoft Excel</label>
+                <input type="radio" name="sheet" id="r-gs" value="sheets" class="seg-input">
+                <label for="r-gs" class="seg-label">Google Sheets</label>
+              </div>
+            </div>
+            <button class="btn-run btn-excel" id="excel-btn" onclick="run('excel')">⚡ Generate Formula — Free</button>
+            <div class="loading" id="excel-loading">
+              <div class="progress-bar"><div class="progress-fill prog-excel"></div></div>
+              <div class="loading-label">Building your formula…</div>
+            </div>
+            <div class="result-panel" id="excel-result">
+              <div class="result-bar">
+                <div class="result-status" style="color:#4ade80">
+                  <div class="result-dot" style="background:#4ade80"></div>Formula ready
+                </div>
+                <div class="result-hint">Click to copy</div>
+              </div>
+              <div class="result-body">
+                <div class="mono-result" id="excel-formula" onclick="copyFormula()">
+                  <span class="mono-hint">Click to copy</span>
+                </div>
+                <div class="mono-explain" id="excel-explain"></div>
+              </div>
+              <div class="blur-wrap" id="excel-blur">
+                <div class="blur-body">Alternative with error handling: =IFERROR(VLOOKUP(A2,Sheet2!A:C,3,FALSE),"Not found") · step-by-step argument breakdown · nested version for multiple conditions · how to extend for dynamic ranges · common mistakes and debugging tips…</div>
+                <div class="blur-fade"></div>
+              </div>
+              <div class="paywall" id="excel-paywall">
+                <div class="paywall-line">
+                  <div class="paywall-icon">🔓</div>
+                  <div class="paywall-copy">
+                    <div class="paywall-title">Get the full formula package</div>
+                    <div class="paywall-sub">Step-by-step breakdown · alternatives · error handling · copy-paste ready</div>
+                  </div>
+                </div>
+                <div class="paywall-opts">
+                  <div class="pw-opt">
+                    <div class="pw-price">$4.99</div>
+                    <div class="pw-period">One-time · this formula</div>
+                    <button class="pw-btn pw-btn-once" onclick="goOneTime()">Unlock full package</button>
+                  </div>
+                  <div class="pw-opt hot">
+                    <div class="pw-best">Best value</div>
+                    <div class="pw-price">$9<span>/mo</span></div>
+                    <div class="pw-period">Unlimited · all tools · cancel anytime</div>
+                    <button class="pw-btn pw-btn-sub" onclick="goSubscribe()">Get unlimited access</button>
+                  </div>
+                </div>
+                <div class="pw-already"><button onclick="openModal()">Already subscribed? Verify here to unlock →</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YOUTUBE -->
+      <div class="tool-panel" id="panel-youtube">
+        <div class="tool-card" data-tool="youtube">
+          <div class="tool-accent"></div>
+          <div class="tool-card-head">
+            <div class="tool-card-icon">🎥</div>
+            <div class="tool-card-meta">
+              <h2 class="tool-card-title">YouTube → Blog Post Converter</h2>
+              <div class="tool-card-desc">Paste any YouTube URL and get a complete, SEO-optimized blog post written from the video. Repurpose content in seconds, not hours.</div>
+            </div>
+            <div class="tool-card-tag">Free preview</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="step-n">1</div>Paste URL or transcript</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">2</div>AI writes the post</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">3</div>Copy or download</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="field">
+              <label class="field-label">YouTube URL</label>
+              <input type="url" id="yt-url" placeholder="https://www.youtube.com/watch?v=…">
+            </div>
+            <div class="field">
+              <label class="field-label">Or paste transcript / describe the video</label>
+              <textarea id="yt-text" placeholder="Paste the video transcript, or describe what it covers…&#10;&#10;E.g. 20-min tutorial on growing tomatoes in small spaces. Topics: container selection, soil, watering, pests…"></textarea>
+            </div>
+            <div class="field">
+              <label class="field-label">Tone</label>
+              <div class="seg-ctrl">
+                <input type="radio" name="tone" id="t-pro" value="professional" class="seg-input" checked>
+                <label for="t-pro" class="seg-label">Professional</label>
+                <input type="radio" name="tone" id="t-cas" value="casual" class="seg-input">
+                <label for="t-cas" class="seg-label">Casual & friendly</label>
+                <input type="radio" name="tone" id="t-seo" value="seo" class="seg-input">
+                <label for="t-seo" class="seg-label">SEO optimized</label>
+              </div>
+            </div>
+            <button class="btn-run btn-youtube" id="youtube-btn" onclick="run('youtube')">⚡ Convert to Blog Post — Free Preview</button>
+            <div class="loading" id="youtube-loading">
+              <div class="progress-bar"><div class="progress-fill prog-youtube"></div></div>
+              <div class="loading-label">Writing your blog post…</div>
+            </div>
+            <div class="result-panel" id="youtube-result">
+              <div class="result-bar">
+                <div class="result-status" style="color:#f87171">
+                  <div class="result-dot" style="background:#f87171"></div>Blog post ready
+                </div>
+                <div class="result-hint">Free · introduction only</div>
+              </div>
+              <div class="result-body"><div class="result-text" id="youtube-output"></div></div>
+              <div class="blur-wrap" id="youtube-blur">
+                <div class="blur-body">## The Core Method&#10;&#10;Now that the intro is set, the video walks through 3 practical techniques with real-world examples…&#10;&#10;## Key Takeaways & Next Steps&#10;&#10;Five actions to take today, the tools recommended, and how to measure progress over 30 days…</div>
+                <div class="blur-fade"></div>
+              </div>
+              <div class="paywall" id="youtube-paywall">
+                <div class="paywall-line">
+                  <div class="paywall-icon">🔓</div>
+                  <div class="paywall-copy">
+                    <div class="paywall-title">Get your complete blog post</div>
+                    <div class="paywall-sub">Full post · all sections · conclusion · SEO meta & tags · ready to publish</div>
+                  </div>
+                </div>
+                <div class="paywall-opts">
+                  <div class="pw-opt">
+                    <div class="pw-price">$4.99</div>
+                    <div class="pw-period">One-time · this video</div>
+                    <button class="pw-btn pw-btn-once" onclick="goOneTime()">Unlock full post</button>
+                  </div>
+                  <div class="pw-opt hot">
+                    <div class="pw-best">Best value</div>
+                    <div class="pw-price">$9<span>/mo</span></div>
+                    <div class="pw-period">Unlimited · all tools · cancel anytime</div>
+                    <button class="pw-btn pw-btn-sub" onclick="goSubscribe()">Get unlimited access</button>
+                  </div>
+                </div>
+                <div class="pw-already"><button onclick="openModal()">Already subscribed? Verify here to unlock →</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HANDWRITING -->
+      <div class="tool-panel" id="panel-hw">
+        <div class="tool-card" data-tool="hw">
+          <div class="tool-accent"></div>
+          <div class="tool-card-head">
+            <div class="tool-card-icon">✍️</div>
+            <div class="tool-card-meta">
+              <h2 class="tool-card-title">Handwriting to Text Transcription</h2>
+              <div class="tool-card-desc">Upload a photo of any handwritten notes, letters, or documents. Get perfectly typed clean text in seconds — works with messy handwriting.</div>
+            </div>
+            <div class="tool-card-tag">Free preview</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="step-n">1</div>Upload handwriting photo</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">2</div>AI reads & transcribes</div>
+            <div class="step-arrow">›</div>
+            <div class="step"><div class="step-n">3</div>Copy or download</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="field">
+              <label class="field-label">Upload handwriting photo</label>
+              <div class="file-drop" onclick="document.getElementById('hw-file').click()">
+                <input type="file" id="hw-file" accept="image/*" onchange="showFile('hw',this)">
+                <div class="fd-icon">📸</div>
+                <div class="fd-text"><span>Click to upload</span> or drag & drop</div>
+                <div class="fd-sub">JPG · PNG · WEBP — Phone camera photos work perfectly</div>
+              </div>
+              <div class="file-chip" id="hw-fname">📸 <span id="hw-fname-t"></span></div>
+            </div>
+            <div class="field">
+              <label class="field-label">Output format</label>
+              <div class="seg-ctrl">
+                <input type="radio" name="hw-fmt" id="hw-pl" value="plain" class="seg-input" checked>
+                <label for="hw-pl" class="seg-label">Plain text</label>
+                <input type="radio" name="hw-fmt" id="hw-wd" value="word" class="seg-input">
+                <label for="hw-wd" class="seg-label">Word document</label>
+              </div>
+            </div>
+            <button class="btn-run btn-hw" id="hw-btn" onclick="run('hw')">⚡ Convert Handwriting — Free Preview</button>
+            <div class="loading" id="hw-loading">
+              <div class="progress-bar"><div class="progress-fill prog-hw"></div></div>
+              <div class="loading-label">Reading your handwriting…</div>
+            </div>
+            <div class="result-panel" id="hw-result">
+              <div class="result-bar">
+                <div class="result-status" style="color:#fbbf24">
+                  <div class="result-dot" style="background:#fbbf24"></div>Transcription ready
+                </div>
+                <div class="result-hint">Free · first section only</div>
+              </div>
+              <div class="result-body"><div class="result-text" id="hw-output"></div></div>
+              <div class="blur-wrap" id="hw-blur">
+                <div class="blur-body">…notes continue with bullet points and a numbered action list. Several words appear underlined. Margin annotations captured. Final section has follow-up questions and references with page numbers…</div>
+                <div class="blur-fade"></div>
+              </div>
+              <div class="paywall" id="hw-paywall">
+                <div class="paywall-line">
+                  <div class="paywall-icon">🔓</div>
+                  <div class="paywall-copy">
+                    <div class="paywall-title">Unlock complete transcription</div>
+                    <div class="paywall-sub">Full text · formatted · copy or download as Word or PDF</div>
+                  </div>
+                </div>
+                <div class="paywall-opts">
+                  <div class="pw-opt">
+                    <div class="pw-price">$4.99</div>
+                    <div class="pw-period">One-time · this document</div>
+                    <button class="pw-btn pw-btn-once" onclick="goOneTime()">Unlock full text</button>
+                  </div>
+                  <div class="pw-opt hot">
+                    <div class="pw-best">Best value</div>
+                    <div class="pw-price">$9<span>/mo</span></div>
+                    <div class="pw-period">Unlimited · all tools · cancel anytime</div>
+                    <button class="pw-btn pw-btn-sub" onclick="goSubscribe()">Get unlimited access</button>
+                  </div>
+                </div>
+                <div class="pw-already"><button onclick="openModal()">Already subscribed? Verify here to unlock →</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panels -->
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="side-panel">
+
+      <div class="side-card">
+        <div class="side-card-head">
+          <span>Tools</span>
+        </div>
+        <div class="side-tool-list">
+          <button class="side-tool-item active" data-stool="pdf" onclick="switchTool('pdf')">
+            <div class="sti-icon">📄</div>
+            <span class="sti-name">PDF Summary</span>
+            <span class="sti-badge">FREE</span>
+          </button>
+          <button class="side-tool-item" data-stool="excel" onclick="switchTool('excel')">
+            <div class="sti-icon">📊</div>
+            <span class="sti-name">Excel Formula</span>
+            <span class="sti-badge">FREE</span>
+          </button>
+          <button class="side-tool-item" data-stool="youtube" onclick="switchTool('youtube')">
+            <div class="sti-icon">🎥</div>
+            <span class="sti-name">YouTube → Blog</span>
+            <span class="sti-badge">FREE</span>
+          </button>
+          <button class="side-tool-item" data-stool="hw" onclick="switchTool('hw')">
+            <div class="sti-icon">✍️</div>
+            <span class="sti-name">Handwriting</span>
+            <span class="sti-badge">FREE</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="side-card-head"><span>Pricing</span></div>
+        <div class="pricing-card">
+          <div class="pricing-row" onclick="goOneTime()">
+            <div>
+              <div class="pr-label">One-time unlock</div>
+              <div class="pr-label" style="font-size:0.68rem;margin-top:2px;color:var(--text-disabled)">Single result · any tool</div>
+            </div>
+            <div style="text-align:right">
+              <div class="pr-price">$4.99</div>
+            </div>
+          </div>
+          <div class="pricing-row" onclick="goSubscribe()">
+            <div>
+              <div class="pr-label">Unlimited plan</div>
+              <div class="pr-label" style="font-size:0.68rem;margin-top:2px;color:var(--text-disabled)">All tools · cancel anytime</div>
+            </div>
+            <div style="text-align:right">
+              <div class="pr-price">$9<span style="font-size:0.7rem;font-weight:400;color:var(--text-tertiary)">/mo</span></div>
+              <span class="pr-badge">Best value</span>
+            </div>
+          </div>
+          <div class="pricing-note">Free preview on every tool. Pay only when you want the full result.</div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- /tool-layout -->
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">AITaskDone</div>
+  <div class="footer-meta">© 2025 AITaskDone · Payments secured by Stripe</div>
+  <div class="footer-links">
+    <a href="#" class="footer-link">Privacy</a>
+    <a href="#" class="footer-link">Terms</a>
+    <a href="#" class="footer-link">Contact</a>
+  </div>
+</footer>
+
+<script>
+/* ── CONFIG ── */
+const STRIPE_ONE_TIME = 'https://buy.stripe.com/4gMeVdaFg8DHa0pfjGeAg04';
+const STRIPE_SUB      = 'https://buy.stripe.com/8x26oH6p02fjgoN1sQeAg05';
+// ============================================================
+// SUPABASE CONFIG — fill these in after creating your project
+// ============================================================
+const SUPABASE_URL      = 'YOUR_SUPABASE_URL';       // e.g. https://xxxx.supabase.co
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';  // safe to expose — anon key only
+
+const VERIFY_API = SUPABASE_URL + '/functions/v1/verify-subscriber';
+
+/* ── 30-day memory ── */
+const KEY = 'aitd_sub_v1';
+const getState = () => { try { const d=JSON.parse(localStorage.getItem(KEY)); if(!d||Date.now()>d.exp){localStorage.removeItem(KEY);return null;} return d; } catch{return null;} };
+const saveState = e => localStorage.setItem(KEY, JSON.stringify({email:e, exp:Date.now()+30*864e5, ok:true}));
+const isSub = () => !!getState()?.ok;
+
+/* ── Init ── */
+(function(){
+  const s = getState();
+  if(s?.ok) setSubUI(s.email);
+})();
+
+function setSubUI(email) {
+  const ind = document.getElementById('sub-indicator');
+  ind.classList.add('visible');
+  document.getElementById('sub-indicator-text').textContent = email;
+  document.getElementById('btn-sub-nav').style.display = 'none';
+  ['pdf','excel','youtube','hw'].forEach(renderUnlocked);
+}
+
+/* ── Modal ── */
+function openModal() {
+  document.getElementById('sub-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('sub-email').focus(), 80);
+  document.getElementById('modal-err').classList.remove('show');
+  document.getElementById('sub-email').value = '';
+}
+function closeModal() { document.getElementById('sub-modal').classList.remove('open'); }
+
+async function verify() {
+  const email = document.getElementById('sub-email').value.trim();
+  if(!email||!email.includes('@')) { showErr('Please enter a valid email address.'); return; }
+
+  const btn = document.getElementById('verify-btn');
+  btn.disabled = true;
+  document.getElementById('modal-checking').style.display = 'flex';
+  document.getElementById('modal-err').classList.remove('show');
+
+  let valid = false;
+  try {
+    if(VERIFY_API) {
+      const r = await fetch(VERIFY_API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON_KEY},body:JSON.stringify({email})});
+      valid = (await r.json()).active === true;
+    } else {
+      await new Promise(r=>setTimeout(r,1400));
+      valid = email.includes('@') && email.includes('.');
+    }
+  } catch { showErr('Connection error. Please try again.'); btn.disabled=false; document.getElementById('modal-checking').style.display='none'; return; }
+
+  btn.disabled = false;
+  document.getElementById('modal-checking').style.display = 'none';
+  if(valid) { saveState(email); setSubUI(email); closeModal(); }
+  else showErr('No active subscription found for this email. Please check the address you used to subscribe.');
+}
+function showErr(m) { const e=document.getElementById('modal-err'); e.textContent=m; e.classList.add('show'); }
+
+/* ── Unlocked state ── */
+function renderUnlocked(tool) {
+  const blur=document.getElementById(tool+'-blur'); if(blur) blur.style.display='none';
+  const pw=document.getElementById(tool+'-paywall'); if(!pw) return;
+  pw.className='paywall unlocked';
+  pw.innerHTML=`
+    <div class="unlocked-wrap">
+      <div class="unlocked-check">✓</div>
+      <div class="unlocked-text">
+        <strong>Unlimited access active</strong>
+        <span>Full result below — copy it or scroll up to read</span>
+      </div>
+    </div>
+    <button class="btn-copy-full" onclick="copyOut('${tool}', this)">📋 Copy full result</button>`;
+}
+
+function copyOut(tool, btn) {
+  const id = tool==='excel' ? 'excel-formula' : tool+'-output';
+  const el = document.getElementById(id);
+  if(!el) return;
+  const text = tool==='excel'
+    ? (el.childNodes[0]?.nodeType===3 ? el.childNodes[0].textContent : el.textContent)
+    : el.textContent;
+  navigator.clipboard.writeText(text.trim()).then(()=>{
+    const orig=btn.textContent;
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>btn.textContent=orig, 2200);
+  });
+}
+
+/* ── Payments ── */
+function goOneTime()  { STRIPE_ONE_TIME.includes('YOUR') ? toast('Set STRIPE_ONE_TIME in the CONFIG to enable payments.',5000) : window.open(STRIPE_ONE_TIME,'_blank'); }
+function goSubscribe() { STRIPE_SUB.includes('YOUR')     ? toast('Set STRIPE_SUB in the CONFIG to enable payments.',5000)      : window.open(STRIPE_SUB,'_blank'); }
+
+/* ── Tool switching ── */
+function switchTool(tool) {
+  document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tool).classList.add('active');
+  ['tool-tab','nav-switch-btn'].forEach(cls=>{
+    document.querySelectorAll('.'+cls).forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.${cls}[data-${cls==='tool-tab'?'tab':'nav'}="${tool}"]`)?.classList.add('active');
+  });
+  document.querySelectorAll('.side-tool-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.side-tool-item[data-stool="${tool}"]`)?.classList.add('active');
+}
+
+/* ── File display ── */
+function showFile(tool, input) {
+  if(!input.files[0]) return;
+  document.getElementById(tool+'-fname-t').textContent = input.files[0].name;
+  document.getElementById(tool+'-fname').style.display = 'flex';
+}
+
+/* ── Claude API ── */
+async function callClaude(prompt, system='') {
+  const r=await fetch(SUPABASE_URL+'/functions/v1/claude-proxy',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON_KEY},
+    body:JSON.stringify({prompt,system})
+  });
+  return (await r.json()).text||'Something went wrong. Please try again.';
+}
+async function callVision(prompt, b64, mime) {
+  const r=await fetch(SUPABASE_URL+'/functions/v1/claude-proxy',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON_KEY},
+    body:JSON.stringify({prompt,image:b64,mime})
+  });
+  return (await r.json()).text||'Could not process image.';
+}
+
+/* ── Run tools ── */
+function resetBtn(tool) {
+  document.getElementById(tool+'-btn').disabled=false;
+  document.getElementById(tool+'-loading').style.display='none';
+}
+
+async function run(tool) {
+  const btn=document.getElementById(tool+'-btn');
+  const ld=document.getElementById(tool+'-loading');
+  const res=document.getElementById(tool+'-result');
+  btn.disabled=true; ld.style.display='flex'; res.style.display='none';
+
+  try {
+    if(tool==='pdf') {
+      const text=document.getElementById('pdf-text').value.trim();
+      const file=document.getElementById('pdf-file').files[0];
+      if(!text&&!file){ toast('Please upload a PDF or paste some text first.'); resetBtn(tool); return; }
+      const content=text||`PDF: ${file.name}`;
+      const scope=isSub()?'Write a complete detailed summary with clear headings and all key points':'Write only the first 2–3 key points as a free preview (max 120 words). Be specific and compelling.';
+      const out=await callClaude(`${scope}:\n\n${content}`,'Expert document summarizer. Be specific, insightful, and clear.');
+      document.getElementById('pdf-output').textContent=out;
+
+    } else if(tool==='excel') {
+      const input=document.getElementById('excel-input').value.trim();
+      const sheet=document.querySelector('input[name="sheet"]:checked').value;
+      if(!input){ toast('Please describe what you want your formula to do.'); resetBtn(tool); return; }
+      const out=await callClaude(
+        `Generate a ${sheet==='excel'?'Microsoft Excel':'Google Sheets'} formula for: "${input}"\nLine 1: the formula only (no label, no prefix)\nLine 2: one clear sentence explaining what it does`,
+        'Expert spreadsheet formula generator. Formula on line 1 only. One-sentence explanation on line 2 only. Nothing else.'
+      );
+      const lines=out.split('\n').filter(l=>l.trim());
+      const formula=lines[0]?.replace(/^\d+\.\s*/,'').trim()||out.trim();
+      const explain=lines.slice(1).join(' ').replace(/^\d+\.\s*/,'').trim();
+      const formulaEl=document.getElementById('excel-formula');
+      const hint=formulaEl.querySelector('.mono-hint');
+      while(formulaEl.firstChild) formulaEl.removeChild(formulaEl.firstChild);
+      formulaEl.appendChild(document.createTextNode(formula));
+      if(hint) formulaEl.appendChild(hint);
+      document.getElementById('excel-explain').textContent=explain;
+
+    } else if(tool==='youtube') {
+      const url=document.getElementById('yt-url').value.trim();
+      const text=document.getElementById('yt-text').value.trim();
+      if(!url&&!text){ toast('Please paste a YouTube URL or describe the video.'); resetBtn(tool); return; }
+      const tone=document.querySelector('input[name="tone"]:checked').value;
+      const td=tone==='professional'?'professional and authoritative':tone==='casual'?'casual, warm, and conversational':'SEO-optimized with keyword-rich headings';
+      const content=text||`YouTube: ${url}`;
+      const scope=isSub()?'Write a complete blog post: title, intro, 3–4 sections with subheadings, conclusion, SEO meta description':'Write ONLY a compelling title and introduction paragraph (max 120 words) as a free preview';
+      const out=await callClaude(`${scope} in a ${td} tone:\n\n${content}`,'Expert content writer. Convert videos into engaging blog posts.');
+      document.getElementById('youtube-output').textContent=out;
+
+    } else if(tool==='hw') {
+      const file=document.getElementById('hw-file').files[0];
+      if(!file){ toast('Please upload a photo of handwriting first.'); resetBtn(tool); return; }
+      const reader=new FileReader();
+      reader.onerror=()=>{ toast('Could not read that file. Please try another.'); resetBtn('hw'); };
+      reader.onload=async(e)=>{
+        try {
+          const b64=e.target.result.split(',')[1];
+          const scope=isSub()?'Transcribe ALL handwritten text completely and accurately, preserving structure':'Transcribe only the first paragraph or first 5–6 lines as a free preview';
+          const out=await callVision(`${scope}. Preserve original wording exactly.`,b64,file.type);
+          document.getElementById('hw-output').textContent=out;
+          finish('hw');
+        } catch { toast('Something went wrong. Please try again.'); }
+        resetBtn('hw');
+      };
+      reader.readAsDataURL(file); return;
+    }
+    finish(tool);
+  } catch(e){ toast('Something went wrong. Please try again.'); }
+  resetBtn(tool);
+}
+
+function finish(tool) {
+  document.getElementById(tool+'-result').style.display='block';
+  if(isSub()) renderUnlocked(tool);
+}
+
+function copyFormula() {
+  const el=document.getElementById('excel-formula');
+  const node=el.childNodes[0];
+  const text=(node&&node.nodeType===3)?node.textContent:el.textContent;
+  if(!text.trim()) return;
+  navigator.clipboard.writeText(text.trim()).then(()=>toast('Formula copied!'));
+}
+
+
+/* ── Toast ── */
+function toast(msg, dur=3200) {
+  const t=document.createElement('div');
+  Object.assign(t.style,{
+    position:'fixed',bottom:'20px',left:'50%',
+    transform:'translateX(-50%) translateY(50px)',opacity:'0',
+    background:'var(--overlay)',border:'1px solid var(--border-default)',
+    color:'var(--text-secondary)',padding:'10px 18px',
+    borderRadius:'8px',fontFamily:'var(--font)',fontSize:'0.82rem',fontWeight:'500',
+    zIndex:'9999',transition:'all 0.25s var(--ease)',
+    boxShadow:'0 8px 28px rgba(0,0,0,0.5)',whiteSpace:'nowrap',pointerEvents:'none'
+  });
+  t.textContent=msg; document.body.appendChild(t);
+  requestAnimationFrame(()=>{t.style.transform='translateX(-50%) translateY(0)';t.style.opacity='1';});
+  setTimeout(()=>{ t.style.transform='translateX(-50%) translateY(50px)'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, dur);
+}
+
+/* ── Drag & drop ── */
+document.querySelectorAll('.file-drop').forEach(el=>{
+  el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drag');});
+  el.addEventListener('dragleave',()=>el.classList.remove('drag'));
+  el.addEventListener('drop',e=>{
+    e.preventDefault(); el.classList.remove('drag');
+    const inp=el.querySelector('input[type=file]');
+    if(inp&&e.dataTransfer.files[0]){
+      const dt=new DataTransfer(); dt.items.add(e.dataTransfer.files[0]);
+      inp.files=dt.files; inp.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+document.getElementById('sub-modal').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeModal(); });
+</script>
+</body>
+</html>
